@@ -4,4 +4,3 @@ const UserDetailPage = async ({ params }: { params: { id: string } }) => {
 };
 
 export default UserDetailPage;
-//ashim.sen33@gmail.com
