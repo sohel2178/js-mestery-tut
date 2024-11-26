@@ -50,6 +50,7 @@ function SocialAuth() {
           alt="google-logo"
           className=" mr-2.5 object-contain"
         />
+
         <span>Login with Google</span>
       </Button>
     </div>
