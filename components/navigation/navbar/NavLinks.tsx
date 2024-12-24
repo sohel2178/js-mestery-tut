@@ -9,7 +9,7 @@ import { sidebarLinks } from "@/constants";
 import ROUTES from "@/constants/route";
 import { cn } from "@/lib/utils";
 
-function NavLinks({ isMobileNav = true }: { isMobileNav?: boolean }) {
+function NavLinks({ isMobileNav = false }: { isMobileNav?: boolean }) {
   const pathname = usePathname();
   const userId = 1;
 
