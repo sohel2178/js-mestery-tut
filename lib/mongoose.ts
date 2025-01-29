@@ -24,6 +24,7 @@ if (!cached) {
 
 const dbConnect = async (): Promise<Mongoose> => {
   if (cached.conn) {
+    console.log("Connected From Cache");
     return cached.conn;
   }
 
