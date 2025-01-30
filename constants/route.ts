@@ -4,6 +4,7 @@ const ROUTES = {
   SIGNUP: "/signup",
   COMUNITY: "/community",
   COLLECTION: "/collections",
+  SIGN_IN_WITH_OAUTH: "/signin-with-oauth",
   JOBS: "/find-jobs",
   TAGS: "/tags",
   PROFILE: (id: string) => `/profile/${id}`,

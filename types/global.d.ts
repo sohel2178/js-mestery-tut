@@ -20,6 +20,17 @@ interface Question {
   views: number;
 }
 
+interface SignInWithOAuthParam {
+  provider: "github" | "google" | "facebook";
+  providerAccountId: string;
+  user: {
+    name: string;
+    username: string;
+    email: string;
+    image: string;
+  };
+}
+
 type ActionResponse<T = null> = {
   success: boolean;
   data?: T;

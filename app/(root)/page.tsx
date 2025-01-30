@@ -1,14 +1,16 @@
-// import { auth, signOut } from "@/auth";
+import Link from "next/link";
+
+// import { auth } from "@/auth";
 // import { Button } from "@/components/ui/button";
 // import ROUTES from "@/constants/route";
 
-import Link from "next/link";
-
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/route";
+import { api } from "@/lib/api";
 
 const questions = [
   {
@@ -57,11 +59,15 @@ interface SearchParams {
 const Home = async ({ searchParams }: SearchParams) => {
   // console.log("Where am I???");
 
-  const { query = "", filter = "" } = await searchParams;
+  const session = await auth();
 
-  // const filterQuestions = questions.filter((question) =>
-  //   question.title.toLowerCase().includes(query?.toLowerCase())
-  // );
+  // if (session) {
+  //   signOut();
+  // }
+
+  console.log(session);
+
+  const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
     const matchesQuery = question.title
@@ -75,10 +81,24 @@ const Home = async ({ searchParams }: SearchParams) => {
 
   // console.log(await searchParams);
 
+  // if (session) {
+  //   return (
+  //     <form
+  //       action={async () => {
+  //         "use server";
+  //         await signOut();
+  //       }}
+  //     >
+  //       <button type="submit">Sign Out</button>
+  //     </form>
+  //   );
+  // }
+
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
+
         <Button
           className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900"
           asChild
