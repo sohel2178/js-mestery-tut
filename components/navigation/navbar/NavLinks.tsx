@@ -9,19 +9,18 @@ import { sidebarLinks } from "@/constants";
 import ROUTES from "@/constants/route";
 import { cn } from "@/lib/utils";
 
-function NavLinks({ isMobileNav = false }: { isMobileNav?: boolean }) {
+const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
   const pathname = usePathname();
   const userId = 1;
 
-  // console.log(pathname);
   return (
     <>
       {sidebarLinks.map((item) => {
         const isActive =
-          (item.route.length > 1 && pathname.includes(item.route)) ||
+          (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
 
-        if (item.route === ROUTES.PROFILE) {
+        if (item.route === "/profile") {
           if (userId) item.route = `${item.route}/${userId}`;
           else return null;
         }
@@ -65,6 +64,6 @@ function NavLinks({ isMobileNav = false }: { isMobileNav?: boolean }) {
       })}
     </>
   );
-}
+};
 
 export default NavLinks;
