@@ -12,6 +12,7 @@ interface Author {
 interface Question {
   _id: string;
   title: string;
+  content: string;
   tags: Tag[];
   author: Author;
   createdAt: Date;
@@ -42,6 +43,14 @@ interface CreateQuestionParams {
   title: string;
   content: string;
   tags: string[];
+}
+
+interface EditQuestionParams extends CreateQuestionParams {
+  questionId: string;
+}
+
+interface GetQuestionParams {
+  questionId: string;
 }
 
 interface RouteParams {

@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import ROUTES from "@/constants/route";
 import { toast } from "@/hooks/use-toast";
-import { CreateQuestion } from "@/lib/actions/question.action";
+import { CreateQuestion, EditQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validation";
 
 import TagCard from "../cards/TagCard";
@@ -27,17 +27,26 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
+interface Props {
+  question: Question;
+  isEdit: boolean;
+}
+
 const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,
 });
 
-function QuestionForm() {
+function QuestionForm({ question, isEdit = false }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const editorRef = useRef<MDXEditorMethods>(null);
   const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
-    defaultValues: { title: "", content: "", tags: [] },
+    defaultValues: {
+      title: question?.title || "",
+      content: question?.content || "",
+      tags: question?.tags.map((tag) => tag.name) || [],
+    },
   });
 
   const handleInputKeyDown = (
@@ -83,6 +92,29 @@ function QuestionForm() {
     data: z.infer<typeof AskQuestionSchema>
   ) => {
     startTransition(async () => {
+      if (isEdit && question) {
+        const result = await EditQuestion({
+          questionId: question._id,
+          ...data,
+        });
+
+        if (result.success) {
+          toast({
+            title: "Success",
+            description: "Question Updated successfully",
+          });
+
+          if (result.data) router.push(ROUTES.QUESTION(result.data._id));
+        } else {
+          toast({
+            title: `Error ${result.status}`,
+            description: result.error?.message || "Something went wrong",
+            variant: "destructive",
+          });
+        }
+
+        return;
+      }
       const result = await CreateQuestion(data);
 
       if (result.success) {
@@ -210,7 +242,7 @@ function QuestionForm() {
                 <span>Submitting</span>
               </>
             ) : (
-              <>Ask A Question</>
+              <>{isEdit ? "Edit" : "Ask A Question"}</>
             )}
           </Button>
         </div>
