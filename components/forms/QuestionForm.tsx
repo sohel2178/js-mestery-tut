@@ -2,11 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MDXEditorMethods } from "@mdxeditor/editor";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
-import React, { useRef } from "react";
+import { useRouter } from "next/navigation";
+import React, { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import ROUTES from "@/constants/route";
+import { toast } from "@/hooks/use-toast";
+import { CreateQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validation";
 
 import TagCard from "../cards/TagCard";
@@ -27,6 +32,8 @@ const Editor = dynamic(() => import("@/components/editor"), {
 });
 
 function QuestionForm() {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const editorRef = useRef<MDXEditorMethods>(null);
   const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
@@ -72,8 +79,29 @@ function QuestionForm() {
     }
   };
 
-  const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
-    console.log(data);
+  const handleCreateQuestion = async (
+    data: z.infer<typeof AskQuestionSchema>
+  ) => {
+    startTransition(async () => {
+      const result = await CreateQuestion(data);
+
+      if (result.success) {
+        toast({
+          title: "Success",
+          description: "Question created successfully",
+        });
+
+        if (result.data) router.push(ROUTES.QUESTION(result.data._id));
+      } else {
+        toast({
+          title: `Error ${result.status}`,
+          description: result.error?.message || "Something went wrong",
+          variant: "destructive",
+        });
+      }
+    });
+
+    // console.log(data);
   };
   return (
     <Form {...form}>
@@ -176,7 +204,14 @@ function QuestionForm() {
             type="submit"
             className="primary-gradient w-fit !text-light-900"
           >
-            Ask A Question
+            {isPending ? (
+              <>
+                <ReloadIcon className="mr-2 size-4 animate-spin" />
+                <span>Submitting</span>
+              </>
+            ) : (
+              <>Ask A Question</>
+            )}
           </Button>
         </div>
       </form>
@@ -185,5 +220,3 @@ function QuestionForm() {
 }
 
 export default QuestionForm;
-
-("2hAq8hJCW0SNuHgA");

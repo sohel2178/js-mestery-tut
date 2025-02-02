@@ -1,7 +1,8 @@
 import React from "react";
 
-function QuestionDetail() {
-  return <div>QuestionDetail</div>;
+async function QuestionDetail({ params }: RouteParams) {
+  const { id } = await params;
+  return <div>QuestionDetail {id}</div>;
 }
 
 export default QuestionDetail;

@@ -4,7 +4,6 @@ import Link from "next/link";
 // import { Button } from "@/components/ui/button";
 // import ROUTES from "@/constants/route";
 
-import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -59,13 +58,13 @@ interface SearchParams {
 const Home = async ({ searchParams }: SearchParams) => {
   // console.log("Where am I???");
 
-  const session = await auth();
+  // const session = await auth();
 
   // if (session) {
   //   signOut();
   // }
 
-  console.log(session);
+  // console.log(session);
 
   const { query = "", filter = "" } = await searchParams;
 
