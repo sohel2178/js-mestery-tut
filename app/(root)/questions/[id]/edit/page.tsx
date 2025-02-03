@@ -21,7 +21,7 @@ async function EditQuestion({ params }: RouteParams) {
 
   if (!success) return notFound();
 
-  console.log(question?.author);
+  //   console.log(question?.author);
 
   if (question?.author?.toString() !== session?.user?.id) {
     redirect(ROUTES.QUESTION(id));

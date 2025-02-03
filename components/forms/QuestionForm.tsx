@@ -28,8 +28,8 @@ import {
 import { Input } from "../ui/input";
 
 interface Props {
-  question: Question;
-  isEdit: boolean;
+  question?: Question;
+  isEdit?: boolean;
 }
 
 const Editor = dynamic(() => import("@/components/editor"), {
