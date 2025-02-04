@@ -66,6 +66,10 @@ interface PaginatedSearchParams {
   sort?: string;
 }
 
+interface GetTagQuestionParams extends Omit<PaginatedSearchParams, "filter"> {
+  tagId: string;
+}
+
 type ActionResponse<T = null> = {
   success: boolean;
   data?: T;

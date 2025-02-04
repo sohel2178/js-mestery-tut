@@ -10,7 +10,7 @@ import { GetTags } from "@/lib/actions/tag.action";
 async function Tags({ searchParams }: RouteParams) {
   const { page, pageSize, query, filter } = await searchParams;
 
-  console.log(page, pageSize, query, filter);
+  // console.log(page, pageSize, query, filter);
   const { success, data, error } = await GetTags({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
