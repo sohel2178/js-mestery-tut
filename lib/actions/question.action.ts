@@ -262,6 +262,7 @@ export async function GetQuestions(
   }
 
   try {
+    // throw new Error("Not Implemented");
     const totalQuestions = await Question.countDocuments(filterQuery);
 
     const questions = await Question.find(filterQuery)
